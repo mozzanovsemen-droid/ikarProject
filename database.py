@@ -1,28 +1,34 @@
-from typing import Optional
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
-from sqlalchemy.orm import DeclarativeBase, Mapped, MappedColumn
+import sqlite3
+import hashlib
 
-engiene = create_async_engine(
-    "sqlite+aiosqlite:///tasks.db"
-)
+def get_connection():
+    conn = sqlite3.connect('notes.db', check_same_thread=False)
+    conn.row_factory = sqlite3.Row
+    return conn
 
-new_session = async_sessionmaker(engiene, expire_on_commit=False)
+def init_db():
+    conn = get_connection()
+    try:
+        conn.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL
+            )
+        ''')
+        conn.execute('''
+            CREATE TABLE IF NOT EXISTS notes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                content TEXT NOT NULL,
+                owner_id INTEGER NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (owner_id) REFERENCES users (id)
+            )
+        ''')
+        conn.commit()
+    finally:
+        conn.close()
 
-class Model(DeclarativeBase):
-    pass
-
-
-class TasksOrm(Model):
-    __tablename__ = "tasks"
-
-    id: Mapped[int] = MappedColumn(primary_key=True)
-    name: Mapped[str]
-    description: Mapped[Optional[str]]
-
-async def create_tables():
-    async with engiene.begin() as conn:
-        await conn.run_sync(Model.metadata.create_all)
-
-async def delete_tables():
-    async with engiene.begin() as conn:
-        await conn.run_sync(Model.metadata.drop_all)
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()

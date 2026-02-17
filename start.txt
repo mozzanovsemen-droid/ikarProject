@@ -1,0 +1,5 @@
+1. python -m venv venv
+2. venv/scripts/activate
+3. pip install -r reqarements.txt
+4. uvicorn main:app --host 127.0.0.1 --port 8080 --reload
+5. .\cloudflared.exe tunnel --url http://localhost:8080 --protocol http2
