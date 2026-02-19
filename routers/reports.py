@@ -34,7 +34,6 @@ def create_report(report: ReportCreate, user_id=Depends(get_current_user), db=De
     return get_report(report_id, db)
 
 
-# 🔥 СТУДЕНТ/УЧИТЕЛЬ: Мои отчёты ✅ ИСПРАВЛЕНО!
 @router.get("/my-reports")
 def get_my_reports(user_id=Depends(get_current_user), db=Depends(get_connection)):
     cursor = db.execute(
@@ -43,10 +42,10 @@ def get_my_reports(user_id=Depends(get_current_user), db=Depends(get_connection)
     )
     reports = [dict(row) for row in cursor.fetchall()]
     print(f"DEBUG: Found {len(reports)} reports for user {user_id}")
-    return reports  # ← УБРАЛ response_model!
+    return reports  
 
 
-# 🔥 СТУДЕНТ: Редактировать свой отчёт
+
 @router.put("/reports/{report_id}", response_model=ReportResponse)
 def student_update_report(report_id: int, update_data: ReportUpdate, user_id=Depends(get_current_user),
                           db=Depends(get_connection)):
