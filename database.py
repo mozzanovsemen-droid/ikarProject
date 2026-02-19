@@ -2,7 +2,7 @@ import sqlite3
 import hashlib
 
 def get_connection():
-    conn = sqlite3.connect('notes.db', check_same_thread=False)
+    conn = sqlite3.connect('reports.db', check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -13,17 +13,22 @@ def init_db():
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT UNIQUE NOT NULL,
-                password_hash TEXT NOT NULL
+                password_hash TEXT NOT NULL,
+                role TEXT NOT NULL CHECK(role IN ('student', 'teacher'))
             )
         ''')
         conn.execute('''
-            CREATE TABLE IF NOT EXISTS notes (
+            CREATE TABLE IF NOT EXISTS reports (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
                 content TEXT NOT NULL,
-                owner_id INTEGER NOT NULL,
+                status TEXT DEFAULT 'draft' CHECK(status IN ('draft', 'in_review', 'reviewed', 'needs_revision')),
+                student_id INTEGER NOT NULL,
+                teacher_id INTEGER,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (owner_id) REFERENCES users (id)
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (student_id) REFERENCES users (id),
+                FOREIGN KEY (teacher_id) REFERENCES users (id)
             )
         ''')
         conn.commit()
