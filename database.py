@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import sqlite3
 import hashlib
 
@@ -73,4 +72,3 @@ def init_db():
 
 def hash_password(password: str) -> str:
     return hashlib.sha256(password.encode()).hexdigest()
->>>>>>> 8dfabf5192fcdaaaa31bef7ba80d493ed6d9f2e0
