@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from fastapi import FastAPI
 from routers import auth, reports, admin
 from database import init_db
@@ -16,7 +15,7 @@ app.include_router(admin.router, prefix="/admin", tags=["Админ"])
 
 @app.get("/")
 def root():
-    return {"message": "Система отчётов студентов ✅"}
+    return {"message": "Система отчётов студентов "}
 =======
 from typing import List
 from typing_extensions import Annotated
@@ -147,4 +146,3 @@ def get_all_notes(
         return {"debug": f"Total notes: {len(notes)}", "notes": notes}
     return notes
 
->>>>>>> 8dfabf5192fcdaaaa31bef7ba80d493ed6d9f2e0
