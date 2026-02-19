@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import jwt, JWTError
@@ -28,7 +27,7 @@ def verify_token(token: str) -> Optional[int]:
 =======
 from datetime import datetime, timedelta
 from typing import Optional
-from jose import jwt, JWTError  # ← ИСПРАВЛЕНО: jose.jwt, НЕ jwt!
+from jose import jwt, JWTError  
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
@@ -50,4 +49,3 @@ def verify_token(token: str) -> Optional[int]:
         return int(user_id)
     except JWTError:
         return None
->>>>>>> 8dfabf5192fcdaaaa31bef7ba80d493ed6d9f2e0
