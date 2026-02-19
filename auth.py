@@ -7,7 +7,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 def create_access_token(data: dict) -> str:
-    """Создаёт JWT токен"""
+    
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
@@ -15,7 +15,6 @@ def create_access_token(data: dict) -> str:
     return encoded_jwt
 
 def verify_token(token: str) -> Optional[int]:
-    """Проверяет JWT токен и возвращает user_id"""
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("user_id")
