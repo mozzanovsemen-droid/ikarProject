@@ -8,7 +8,6 @@ app = FastAPI(title="Система отчётов студентов v2.0")
 def startup():
     init_db()
 
-# Подключаем роутеры
 app.include_router(auth.router, tags=["Аутентификация"])
 app.include_router(reports.router, prefix="/api", tags=["Отчёты"])
 app.include_router(admin.router, prefix="/admin", tags=["Админ"])
