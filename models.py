@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from pydantic import BaseModel, Field
 from typing import Optional, List
 from enum import Enum
@@ -74,4 +73,3 @@ class Note(NoteBase):
 
     class Config:
         from_attributes = True
->>>>>>> 8dfabf5192fcdaaaa31bef7ba80d493ed6d9f2e0
