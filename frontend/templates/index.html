@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Report | Система отчётов</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="/static/script.js" defer></script>
+</head>
+<body>
+
+    <!-- ауф -->
+    <div id="authOverlay" class="auth-overlay">
+        <div class="auth-card">
+            <h2 id="authTitle">Вход в Time Report</h2>
+            <div class="auth-inputs">
+                <input type="text" id="loginUsername" placeholder="Логин">
+                <input type="password" id="loginPassword" placeholder="Пароль">
+
+                <div id="teacherCheckWrapper" class="checkbox-container" style="display: none;">
+                    <input type="checkbox" id="isTeacherReg">
+                    <label for="isTeacherReg">Аккаунт преподавателя</label>
+                </div>
+            </div>
+            <div class="auth-actions">
+                <button id="authPrimaryBtn" onclick="submitAuth()">Войти</button>
+                <p id="authSwitchText">Нет аккаунта? <span onclick="toggleAuthMode()">Зарегистрироваться</span></p>
+            </div>
+            <div id="authError" class="auth-error"></div>
+        </div>
+    </div>
+
+    <div id="noteModal" class="modal">
+        <div class="modal-content">
+            <h2>Новый отчёт</h2>
+            <input type="text" id="noteTitle" placeholder="Введите заголовок...">
+            <textarea id="noteText" rows="6" placeholder="Описание отчёта..."></textarea>
+            <input type="file" id="noteAttachment" accept="image/*,.pdf,.doc,.docx" style="margin-bottom: 10px;">
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeModal()">Отмена</button>
+                <button class="create-btn" onclick="saveNote()">Создать отчёт</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- топ -->
+    <header class="navbar">
+        <div class="logo">TIME REPORT <span id="roleLabel" style="font-size: 0.8rem; opacity: 0.7"></span></div>
+        <div class="nav-controls">
+
+            <button id="addBtn" class="nav-btn" onclick="openModal()">
+                <i class="fa-solid fa-plus"></i> Добавить отчёт
+            </button>
+            <button class="nav-btn" onclick="ensureSidebarOpen()">
+                <i class="fa-solid fa-list"></i> <span id="sidebarBtnText">Все отчёты</span>
+            </button>
+            <div class="user-profile">
+                <i class="fa-solid fa-user-circle"></i>
+                <span id="displayUsername"></span>
+                <button class="logout-link" onclick="logout()">Выйти</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main class="task-view">
+            <h1 id="view-title" class="task-title">Добро пожаловать</h1>
+            <div id="status-display" style="margin-bottom: 20px;"></div>
+
+            <hr class="divider">
+            <div id="view-content" class="task-body">Выберите отчёт из списка справа.</div>
+
+            <div id="teacherControls" class="teacher-controls" style="display: none;">
+                <button class="teacher-btn btn-verify" onclick="updateNoteStatus('accepted')">✔ Принять</button>
+                <button class="teacher-btn" style="background: var(--red); color: white;" onclick="updateNoteStatus('rejected')">✖ Отклонить</button>
+                <button class="teacher-btn" style="background: #f39c12; color: white;" onclick="updateNoteStatus('pending')">⏳ Проверяется</button>
+            </div>
+        </main>
+
+        <!-- сайдик -->
+        <aside id="sidebar" class="sidebar">
+            <div class="toggle-btn" onclick="toggleSidebar()">
+                <i id="toggle-icon" class="fa-solid fa-chevron-right"></i>
+            </div>
+            <div id="sidebar-header" style="padding: 15px; font-weight: bold; border-bottom: 1px solid #2c3e50; text-align: center;">
+                Отчёты
+            </div>
+            <nav id="task-list" class="task-list">
+            </nav>
+        </aside>
+    </div>
+
+</body>
+</html>
